@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Little World ♡ Scrapbook</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .footer{
+            text-align: center;
+            font-size: xx-small;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blush: '#FCE7F0',
+                        dustyRose: '#D98880',
+                        cream: '#FFF9F0',
+                        beige: '#F5EBE0',
+                        burgundy: '#6B1124',
+                        softPeach: '#FFE5D9',
+                        vintageBrown: '#4A3B32',
+                        universeDark: '#0D1B2A',
+                        universeStars: '#E0E1DD'
+                    },
+                    fontFamily: {
+                        dancing: ['Dancing Script', 'cursive'],
+                        playfair: ['Playfair Display', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                        caveat: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="relative">
+
+    <!-- Global Floating Hearts & Petals Canvas -->
+    <canvas id="heartsCanvas"></canvas>
+
+    <!-- FULLSCREEN COVER PAGE / DIARY LOCK -->
+    <div id="coverPage" class="fixed inset-0 z-50 flex items-center justify-center bg-[#4A3B32] p-4 transition-all duration-1000">
+        <div class="relative w-full max-w-4xl h-[85vh] bg-[#FCE7F0] rounded-2xl shadow-2xl border-8 border-[#6B1124] flex flex-col md:flex-row overflow-hidden torn-paper">
+            <!-- Left Side of Diary Cover -->
+            <div class="w-full md:w-1/2 p-8 flex flex-col justify-between relative bg-[#FCE7F0] border-r-2 border-dashed border-[#D98880]">
+                <div class="washi-tape absolute -top-2 left-10 w-32 h-8"></div>
+                <div class="washi-tape-gold absolute bottom-12 right-6 w-28 h-8"></div>
+                
+                <div>
+                    <span class="vintage-stamp">Limited Edition ♡</span>
+                    <h1 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-6 leading-tight">Our Little World</h1>
+                    <p class="font-caveat text-2xl text-[#D98880] mt-2">A little thing about my favorite person.</p>
+                </div>
+
+                <!-- Cover Polaroid Photo -->
+                <div class="polaroid mx-auto my-4 w-56 -rotate-3 hover:rotate-0 transition-transform">
+                    <img src="assets/Snapchat-974814141.jpg" alt="Cover Photo" class="h-44 object-cover">
+                    <p class="font-caveat text-center text-xl text-[#6B1124] mt-2">You & Me Always ♡</p>
+                </div>
+
+                <div class="flex items-center space-x-2 text-sm text-[#4A3B32] font-poppins">
+                    <i class="fa-solid font-bold text-red-500 fa-heart animate-pulse"></i>
+                    <span> for the most special and only girl of my life</span>
+                </div>
+            </div>
+
+            <!-- Right Side of Diary Cover / Lock Mechanism -->
+            <div class="w-full md:w-1/2 p-8 flex flex-col items-center justify-center relative bg-[#FFF9F0]">
+                <!-- Ribbon & Bow Decorative Graphics -->
+                <div class="text-6xl text-[#D98880] mb-4 animate-bounce">
+                    <i class="fa-solid fa-[#6B1124] fa-[#D98880] fa-ribbon"></i> 🎀
+                </div>
+                
+                <h2 class="font-playfair text-2xl text-center text-[#6B1124] mb-4">Are you ready to turn the pages of our love story?</h2>
+                <p class="font-caveat text-xl text-center text-[#4A3B32] mb-8 max-w-xs">KRIPEE YOURE MY FOREVER!</p>
+
+                <!-- Open Button -->
+                <button id="openBookBtn" class="px-8 py-4 bg-[#6B1124] text-white font-dancing text-3xl rounded-full shadow-lg hover:bg-[#8B1E35] hover:scale-105 transition-all flex items-center space-x-3 cursor-pointer group">
+                    <span>Open Our Scrapbook</span>
+                    <i class="fa-solid fa-heart text-pink-300 group-hover:scale-125 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SCRAPBOOK CONTAINER -->
+    <div id="scrapbookApp" class="min-h-screen pb-24 pt-20 px-3 md:px-12 max-w-7xl mx-auto opacity-0 transition-opacity duration-1000">
+
+        <!-- SCRAPBOOK BOOKMARK TABS NAVIGATION -->
+        <header class="fixed top-2 left-0 right-0 z-40 flex justify-center px-2" aria-label="Scrapbook navigation">
+            <nav class="bg-[#FFF9F0]/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border-2 border-[#D98880] flex space-x-2 md:space-x-4 overflow-x-auto max-w-full text-xs md:text-sm font-poppins font-medium text-[#4A3B32]" aria-label="Scrapbook pages">
+                <button onclick="scrollToSection('herSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-pink-100/50">🌸 Her</button>
+                <button onclick="scrollToSection('memoriesSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-rose-100/50">📷 Memories</button>
+                <button onclick="scrollToSection('lettersSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-amber-100/50">✉️ Letters</button>
+                <button onclick="scrollToSection('timelineSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-orange-100/50">🧩 Puzzle</button>
+                <button onclick="scrollToSection('soundtrackSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-purple-100/50">🎵 Songs</button>
+                <button onclick="scrollToSection('surprisesSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-yellow-100/50">🎁 Surprises</button>
+                <button onclick="scrollToSection('dreamsSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-blue-100/50">✈️ Dreams</button>
+                <button onclick="scrollToSection('universeSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-indigo-100/50">✨ Universe</button>
+                <button onclick="scrollToSection('finalWishSection')" class="hover:text-[#6B1124] hover:scale-105 transition-all whitespace-nowrap px-2 py-1 rounded-md bg-pink-200">🌹 Final Wish</button>
+            </nav>
+        </header>
+
+        <!-- SECTION 1: THE GIRL WHO STOLE MY HEART -->
+        <section id="herSection" class="my-16 relative p-6 md:p-12 bg-[#FFF9F0] rounded-3xl torn-paper">
+            <div class="washi-tape absolute -top-4 left-1/4 w-40 h-8"></div>
+            <div class="washi-tape-gold absolute top-10 right-8 w-32 h-8"></div>
+            
+            <div class="text-center mb-10">
+                <span class="vintage-stamp">Page 01 • My Favorite Girl</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">The Girl Who Made myy lifee soo betterr</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">The prettiest mostt beautifull face in the whole wide world ✨</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative">
+                <!-- Left Hand Notes & Small Photos -->
+                <div class="space-y-6">
+                    <div class="polaroid -rotate-6" onclick="openLightbox('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80', 'Your beautiful laugh that brightens my darkest days ☀️', 'Aug 14, 2023')">
+                        <img src="assets/IMG_20260903_212233_488_5.jpg" alt="Her portrait 1">
+                        <p class="font-caveat text-center text-lg mt-2 text-[#6B1124]">"My Sunshine ☀️"</p>
+                    </div>
+
+                    <div class="p-4 bg-[#FCE7F0] rounded-xl border-2 border-dashed border-[#D98880] rotate-2 shadow-sm">
+                        <p class="font-caveat text-xl text-[#4A3B32]">"Babe i lovee u more thann anything ."</p>
+                        <span class="block text-right font-dancing text-lg text-[#6B1124]">- Forever Yours</span>
+                    </div>
+                </div>
+
+                <!-- Center Large Hero Polaroid -->
+                <div class="flex flex-col items-center">
+                    <div class="polaroid w-full max-w-sm rotate-2 hover:rotate-0" onclick="openLightbox('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80', 'The absolute queen of my heart. Perfection in a photograph. ❤️', 'Oct 20, 2023')">
+                        <div class="washi-tape-peach absolute -top-3 left-1/3 w-28 h-6"></div>
+                        <img src="assets/IMG_20260522_211326_437.jpg" alt="Hero portrait" class="h-80 object-cover">
+                        <div class="text-center mt-3">
+                            <p class="font-dancing text-2xl text-[#6B1124] font-bold">My Pretty Girl ♡</p>
+                            <span class="font-caveat text-base text-[#D98880]">The center of my universe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hand Notes & Small Photos -->
+                <div class="space-y-6">
+                    <div class="polaroid rotate-6" onclick="openLightbox('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80', 'Eyes that carry the magic of a thousand stars ✨', 'Dec 05, 2023')">
+                        <img src="assets/kripe.jpg" alt="Her portrait 2">
+                        <p class="font-caveat text-center text-lg mt-2 text-[#6B1124]">"My Favorite Human 🌸"</p>
+                    </div>
+
+                    <div class="p-4 bg-[#FFE5D9] rounded-xl border-2 border-dashed border-[#D98880] -rotate-3 shadow-sm">
+                        <p class="font-caveat text-xl text-[#4A3B32]">Your kindness your love your cuteness whatever you do... I love every bit</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: OUR LITTLE MEMORIES PHOTO GALLERY -->
+        <section id="memoriesSection" class="my-16 p-6 md:p-12 bg-[#F5EBE0] rounded-3xl torn-paper">
+            <div class="text-center mb-10">
+                <span class="vintage-stamp">Page 02 • Photoss Collection</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">Our  Memories</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">IM SOO LUCKY TOO MEET YOUU 💕</p>
+            </div>
+
+            <!-- Dynamic Scrapbook Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="photoGallery">
+                <!-- Generated Gallery Items via JS for high variety -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: LETTERS I NEVER GET TIRED OF WRITING -->
+        <section id="lettersSection" class="my-16 p-6 md:p-12 bg-[#FFF9F0] rounded-3xl torn-paper">
+            <div class="text-center mb-12">
+                <span class="vintage-stamp">Page 03 • Sealed Letters</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">Letters I Never Get Tired Of Writing</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">Click the wax seal to unseal each envelope 💌</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center" id="lettersContainer">
+                <!-- Envelopes injected via JS -->
+            </div>
+        </section>
+
+       <!-- SECTION 4: OUR LOVE STORY WORD SEARCH PUZZLE -->
+        <section id="timelineSection" class="my-16 p-6 md:p-12 bg-[#FFF9F0] rounded-3xl torn-paper relative">
+            <div class="washi-tape-peach absolute -top-3 right-1/4 w-32 h-6"></div>
+            <div class="text-center mb-8">
+                <span class="vintage-stamp">Page 04 • Playful Puzzle</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3"> Love  Word Search</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">Find hidden words in the puzzle below! ♡</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-8">
+                <!-- Word Search Grid Board -->
+                <div class="bg-[#FCE7F0] p-4 md:p-6 rounded-2xl border-2 border-dashed border-[#D98880] shadow-inner">
+                    <div id="wordPuzzleGrid" class="grid grid-cols-8 gap-2 text-center select-none">
+                        <!-- Grid cells generated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Word List & Clues -->
+                <div class="bg-[#F5EBE0] p-6 rounded-2xl border-2 border-dashed border-[#D98880] w-full max-w-xs shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-playfair text-xl text-[#6B1124] font-bold mb-3 text-center">Words to Find:</h3>
+                        <ul id="wordList" class="space-y-2 font-caveat text-2xl text-[#4A3B32]">
+                            <!-- List populated dynamically via JS -->
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-[#D98880]/40 text-center">
+                        <p id="puzzleStatus" class="font-poppins text-xs text-[#6B1124] font-semibold">Found: 0 / 4 words</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+       
+<!-- SECTION 6: OUR SOUNDTRACK -->
+<section id="soundtrackSection" class="my-16 p-6 md:p-12 bg-[#FFE5D9] rounded-3xl torn-paper">
+    <!-- Hidden HTML5 Audio Element -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+
+    <div class="text-center mb-10">
+        <span class="vintage-stamp">Page 05 • SONGSSS</span>
+        <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">SMOLL KRIPE SOO CUTEEEEEEE😝</h2>
+        <p class="font-caveat text-2xl text-[#D98880]">😝😝😝</p>
+    </div>
+    <!-- (Rest of your HTML remains the same) -->
+
+            <div class="flex flex-col md:flex-row items-center justify-around gap-8">
+                <!-- Vinyl Player Record -->
+                <div class="relative w-64 h-64 md:w-80 md:h-80 bg-zinc-900 rounded-full flex items-center justify-center shadow-2xl border-4 border-amber-900/30">
+                    <!-- Grooves -->
+                    <div class="w-full h-full rounded-full border-8 border-zinc-800 flex items-center justify-center">
+                        <div class="w-3/4 h-3/4 rounded-full border-4 border-zinc-700 flex items-center justify-center">
+                            <!-- Vinyl Label Cover -->
+                            <div id="vinylLabel" class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-cover bg-center border-4 border-white vinyl-spinning vinyl-paused shadow-inner" style="background-image: url('assets/FB_IMG_1767089249428.jpg')">
+                                <div class="w-6 h-6 bg-white rounded-full mx-auto my-12 border-2 border-gray-400"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Music Controls & Playlist -->
+                <div class="w-full md:w-1/2 bg-[#FFF9F0] p-6 rounded-2xl shadow-md border-2 border-dashed border-[#D98880]">
+                    <div class="text-center mb-4">
+                        <h3 id="songTitle" class="font-playfair text-2xl text-[#6B1124] font-bold">SMOLL KRIPEE SOOO CUTEEEEEE 😝</h3>
+                        <p id="songSubtitle" class="font-caveat text-lg text-[#D98880]"> ♡</p>
+                    </div>
+
+                    <!-- Audio Progress Bar -->
+                    <div class="space-y-2 mb-6">
+                        <input type="range" id="audioProgress" value="0" min="0" max="100" class="w-full accent-[#6B1124] cursor-pointer">
+                        <div class="flex justify-between text-xs text-[#4A3B32] font-poppins">
+                            <span id="currentTime">0:00</span>
+                            <span id="duration">6:9</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex items-center justify-center space-x-6 mb-6">
+                        <button onclick="prevSong()" class="text-2xl text-[#6B1124] hover:scale-110 transition-transform"><i class="fa-solid fa-backward-step"></i></button>
+                        <button onclick="toggleAudio()" id="playBtn" class="w-14 h-14 bg-[#6B1124] text-white rounded-full flex items-center justify-center text-2xl shadow-lg hover:bg-[#8B1E35] hover:scale-105 transition-all"><i class="fa-solid fa-play"></i></button>
+                        <button onclick="nextSong()" class="text-2xl text-[#6B1124] hover:scale-110 transition-transform"><i class="fa-solid fa-forward-step"></i></button>
+                    </div>
+
+                    <!-- Playlist Select -->
+                    <div class="space-y-2" id="playlistItems">
+                        <!-- Dynamic Songs injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: LITTLE SURPRISES & INTERACTIVE GAMES -->
+        <section id="surprisesSection" class="my-16 p-6 md:p-12 bg-[#FFF9F0] rounded-3xl torn-paper">
+            <div class="text-center mb-10">
+                <span class="vintage-stamp">Page 06 •  Its somethingg somethingg</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">Little Love Surprises</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">Seeee theseeeeeee 🎁</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Scratch Card Card -->
+                <div class="bg-[#FCE7F0] p-6 rounded-2xl border-2 border-dashed border-[#D98880] flex flex-col items-center">
+                    <h3 class="font-playfair text-xl text-[#6B1124] font-bold mb-2">✨ Scratch To Reveal Secret Quote</h3>
+                    <p class="font-caveat text-base text-[#4A3B32] mb-4">Use your cute fingers too scrape thee layerr</p>
+                    <div class="relative w-full max-w-64 h-32 flex items-center justify-center bg-white rounded-xl shadow-inner text-center p-4">
+                        <p class="font-dancing text-xl text-[#6B1124] font-bold">"You are my today tomorrow and forever babee I lovee uu soo muchh"</p>
+                        <canvas id="scratchCanvas" class="absolute inset-0 w-full h-full rounded-xl"></canvas>
+                    </div>
+                </div>
+
+                <!-- Forever Question -->
+                <div class="bg-[#FFE5D9] p-6 rounded-2xl border-2 border-dashed border-[#D98880] flex flex-col items-center justify-center text-center">
+                    <h3 class="font-playfair text-xl text-[#6B1124] font-bold mb-2">💍 One Very Important Question</h3>
+                    <p id="foreverHint" class="font-caveat text-lg text-[#4A3B32] mb-4">Think carefully before you answer...</p>
+                    <p class="font-dancing text-3xl text-[#6B1124] font-bold mb-4">Will you be my forever?</p>
+                    <div id="foreverArena" class="relative w-full flex items-center justify-center gap-4" style="height: 7rem;">
+                        <button id="foreverYes" type="button" class="px-8 py-3 bg-[#6B1124] text-white rounded-full font-dancing text-2xl shadow-lg hover:bg-[#8B1E35] transition-transform duration-300">
+                            Yes 💖
+                        </button>
+                        <button id="foreverNo" type="button" class="px-8 py-3 bg-white text-[#6B1124] border-2 border-[#6B1124] rounded-full font-dancing text-2xl shadow-lg" style="touch-action: manipulation;">
+                            No 💔
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: IF WE COULD DREAM FOREVER -->
+        <section id="dreamsSection" class="my-16 p-6 md:p-12 bg-[#F5EBE0] rounded-3xl torn-paper">
+            <div class="text-center mb-10">
+                <span class="vintage-stamp">Page 07 • Dream Travel</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold mt-3">If We Could Dream Forever let it just be us forever</h2>
+                <p class="font-caveat text-2xl text-[#D98880]">I  want to explore everything every place with you ✈️</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="polaroid rotate-2" onclick="openLightbox('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80', 'Walking hand in hand by the Eiffel Tower at sunset 🇫🇷', 'Dream Trip #1')">
+                    <div class="vintage-stamp absolute top-2 right-2 scale-75">PARIS STAMP</div>
+                    <img src="https://exploringrworld.com/wp-content/uploads/2020/02/IMG_5240-2.jpg" alt="Paris dream">
+                    <p class="font-caveat text-center text-xl mt-3 text-[#6B1124]">Paris Kisses muahhh</p>
+                </div>
+
+                <div class="polaroid -rotate-3" onclick="openLightbox('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80', 'Renting a small wooden house in Kyoto during Cherry Blossom season 🇯🇵', 'Dream Trip #2')">
+                    <div class="vintage-stamp absolute top-2 right-2 scale-75">KYOTO STAMP</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH25MC1RJrT17XGVcLVWzCKBJdyOEglQduLMQk4nEEuti9PVlyz10kMZW8&s=10?auto=format&fit=crop&w=800&q=80" alt="Japan dream">
+                    <p class="font-caveat text-center text-xl mt-3 text-[#6B1124]">HIKINGG WITHH UU 🌸</p>
+                </div>
+
+                <div class="polaroid rotate-3" onclick="openLightbox('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80', 'Eating endless pizza and gelato along the Amalfi Coast 🇮🇹', 'Dream Trip #3')">
+                    <div class="vintage-stamp absolute top-2 right-2 scale-75">AMALFI STAMP</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8rzVPTw00-X-KA32AoX0K72k9ObPnVj2Uc8zO8AXKzw&s=10" alt="Amalfi dream">
+                    <p class="font-caveat text-center text-xl mt-3 text-[#6B1124]">LITERALLY THE WORLD WITH UUU</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: A LITTLE PIECE OF THE UNIVERSE -->
+        <section id="universeSection" class="my-16 p-8 md:p-14 bg-universeDark rounded-3xl text-universeStars shadow-2xl relative overflow-hidden">
+            <div class="text-center mb-10 relative z-10">
+                <span class="border border-pink-400 text-pink-300 px-3 py-1 font-playfair uppercase text-xs tracking-widest rounded">Constellation Page</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-pink-200 font-bold mt-4">A Little Piece of the Universe</h2>
+                <p class="font-caveat text-2xl text-pink-300/80">Somehow  in this large universe  I was soooooooooooooo lucky found you ✨</p>
+            </div>
+
+            <!-- Star Night Interactive Canvas Container -->
+            <div class="relative h-96 border-2 border-dashed border-pink-400/30 rounded-2xl flex items-center justify-center overflow-hidden cursor-pointer" id="universeBox" role="button" tabindex="0" aria-label="Create a star and a love note">
+                <p class="font-caveat text-xl text-pink-200 z-10 pointer-events-none text-center">Click anywhere in the dark skyyyyy ⭐</p>
+                <div id="starNotesContainer" class="absolute inset-0"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: FINAL SCRAPBOOK PAGE -->
+        <section id="finalWishSection" class="my-16 p-8 md:p-14 bg-[#FFF9F0] rounded-3xl torn-paper text-center relative">
+            <div class="washi-tape-gold absolute -top-4 left-1/3 w-44 h-8"></div>
+            
+            <div class="max-w-2xl mx-auto space-y-6">
+                <span class="vintage-stamp">Final Page • Endless Love</span>
+                <h2 class="font-dancing text-5xl md:text-6xl text-[#6B1124] font-bold">Today, Tomorrow, & Always</h2>
+                
+                <div class="polaroid mx-auto w-64 rotate-1 my-6" onclick="openLightbox('./assets/24.png', 'I want too makee soo muchh never endingg memories storiess withh uuuuu!!', 'Forever')">
+                    <img src="./assets/24.png" alt="Final Memory Photo">
+                    <p class="font-caveat text-xl text-[#6B1124] mt-2">You & Me Forever ♡</p>
+                </div>
+
+                <p class="font-caveat text-3xl text-[#4A3B32] leading-relaxed">
+                    I want too makee soo muchh never endingg memories storiess withh uuuuu!!
+                </p>
+
+                <p class="font-dancing text-3xl text-[#6B1124] pt-4">
+                    To my favorite person, today, tomorrow, and always. ♡
+                </p>
+
+                <!-- Secret Final Modal Trigger Button -->
+                <button onclick="toggleModal('secretModal', true)" class="mt-6 px-8 py-3 bg-[#6B1124] text-white rounded-full font-dancing text-2xl shadow-xl hover:bg-[#8B1E35] hover:scale-105 transition-all">
+                    Click Here 🥺
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- LIGHTBOX MODAL POPUP -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="relative bg-white rounded-2xl p-4 max-w-3xl w-full flex flex-col md:flex-row gap-6 shadow-2xl">
+            <button onclick="toggleModal('lightboxModal', false)" class="absolute top-2 right-3 text-2xl text-gray-600 hover:text-black z-10">&times;</button>
+            
+            <div class="w-full md:w-2/3 flex items-center justify-center bg-gray-100 rounded-xl overflow-hidden">
+                <img id="lightboxImg" src="" alt="Enlarged photo" class="max-h-[70vh] object-contain">
+            </div>
+            
+            <div class="w-full md:w-1/3 flex flex-col justify-between py-2">
+                <div>
+                    <span id="lightboxDate" class="vintage-stamp text-xs">Date</span>
+                    <p id="lightboxCaption" class="font-caveat text-2xl text-[#6B1124] mt-4 leading-snug">Caption text...</p>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                    <button onclick="toggleFavoriteHeart(this)" class="text-2xl text-gray-400 hover:text-red-500 transition-colors">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <span class="text-xs text-gray-400 font-poppins">Heart</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECRET NOTE MODAL POPUP -->
+    <div id="secretModal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#FFF9F0] rounded-2xl p-8 max-w-md w-full border-4 border-[#D98880] text-center shadow-2xl relative torn-paper">
+            <button onclick="toggleModal('secretModal', false)" class="absolute top-3 right-4 text-2xl text-[#6B1124] font-bold">&times;</button>
+            <span class="vintage-stamp mb-4 inline-block">Note</span>
+            <h3 class="font-dancing text-4xl text-[#6B1124] font-bold my-3"> I Love You!</h3>
+            <p class="font-caveat text-2xl text-[#4A3B32] mb-6">
+                Thank you for being my girlfriend my budiiiiiii,  and my greatest person everr. You are loved way more than words can explain babee! please neverr leave mee love, i really lovee youu soo muchh and caree aboutt youu veryy muchh babyyyyyyyy🥺💗 
+            </p>
+            <button onclick="toggleModal('secretModal', false)" class="px-6 py-2 bg-[#6B1124] text-white rounded-full font-poppins text-sm hover:bg-[#8B1E35]">
+                Close With A Smile 😊
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <!-- Forever Modal -->
+    <div id="foreverModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="foreverTitle">
+        <div class="bg-[#FFF9F0] rounded-3xl border-4 border-dashed border-[#D98880] shadow-2xl max-w-sm w-full p-8 text-center">
+            <div class="text-6xl mb-3">💍</div>
+            <h3 id="foreverTitle" class="font-dancing text-4xl text-[#6B1124] font-bold mb-3">You're stuck with me forever!</h3>
+            <p class="font-caveat text-2xl text-[#4A3B32] mb-6">No refunds no returns no escape youre stuck with mee I love you! 💕</p>
+            <button id="foreverClose" type="button" class="px-6 py-2 bg-[#6B1124] text-white rounded-full font-dancing text-2xl shadow-lg hover:bg-[#8B1E35] transition-all">
+                HEHEHEE, I'm yourss foreverr 😘
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+       <p>Tihar ko chutti ma ghumna jana milchaa hamii??🥺pilizz😋</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
